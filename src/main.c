@@ -20,11 +20,13 @@ void  signal_handler(int sig)
   {
     ft_putstr_fd("\n", 1);
     print_prompt();
+    rl_on_new_line();
   }
   if (sig == SIGQUIT)
   {
     ft_putstr_fd("\n", 1);
     print_prompt();
+    rl_on_new_line();
   }
 }
 
@@ -39,19 +41,22 @@ void  waiting_command(t_data *data)
   {
       if (line)
         free(line);
-      line = readline(get_prompt());
+      line = readline(get_prompt(data));
       if (line == NULL)
+      {
+        rl_clear_history();
         break ;
+      }
       if (!emptyline(line))
         continue;
       add_history(line);
       if (!parsing(line, data))
         continue;
       task_cmd(data);
+    clear_tab(data->path);
+    clear_2tab(data->args);
+    free(data->args);
   }
-  ft_lstclear(&(data->cmd), free);
-  token_clear(&(data->token), free);
-  free(line);
   clear_all(data);
 }
 
