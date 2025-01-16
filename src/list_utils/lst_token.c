@@ -4,12 +4,13 @@ t_token *token_create(char *str, int token)
 {
   t_token *new;
 
-  new = malloc(sizeof(t_token));
+  new = ft_calloc(sizeof(t_token) , 1);
   if (!new)
     return (NULL);
   if (str[0] == '\'' || str[0] == '\"')
   {
     new->str = ft_substr(str, 1, ft_strlen(str) - 2);
+    free(str);
     if (str[0] == '\'')
     {
       new->sq = TRUE;
@@ -64,24 +65,29 @@ void	token_add_back(t_token **lst, t_token *new)
     *lst = new;
 }
 
-void	deltok(t_token *lst, void (*del)(void *))
+void deltok(t_token *token, void (*del)(void *))
 {
-  if (!del || !lst)
-		return ;
-	del(lst->str);
-	free(lst);
+    if (token->str)
+        del(token->str);
+    if (token->path)
+        del(token->path);
+    if (token->arg)
+        clear_tab(token->arg);
+    free(token);
 }
 
 void	token_clear(t_token **lst, void (*del)(void *))
 {
   t_token	*it;
-  
-  if (!del || !lst)
+
+  it = *lst;
+  if (!del || !lst || !*lst)
     return ;
   while (*lst)
   {
     it = (*lst)->next;
-    deltok(*lst, del);
+    if (it)
+      deltok(*lst, del);
     *lst = it;
   }
   *lst = NULL;

@@ -19,10 +19,10 @@ int choose_token(t_list  *lst, t_token *token)
     return (PARAM);
   if (token != NULL)
   {
-    if (token->type == CMD || token->type == PARAM || token->type == ARG || token->type == TRUNC || token->type == APPEND)
-     return (ARG);
     if (token->type == PIPE)
       return (CMD);
+    else
+     return (ARG);
   }
   return (CMD);
 }
@@ -40,20 +40,16 @@ bool token_setup(t_data *data)
   while (it)
   {
     toktok = choose_token(it, last_token(data->token));
-    if (toktok == HEREDOC)
+    if (toktok == HEREDOC || toktok == APPEND)
     {
-      token_add_back(&(data->token), token_create(ft_strjoin(it->str, it->next->str), toktok));
-      it = it->next->next;
-    }
-    else if (toktok == APPEND)
-    {
-      token_add_back(&(data->token), token_create(ft_strjoin(it->str, it->next->str), toktok));
+      char *joined = ft_strjoin(it->str, it->next->str);
+      token_add_back(&(data->token), token_create(joined, toktok));
       it = it->next->next;
     }
     else
     {
-    token_add_back(&(data->token), token_create(ft_strdup(it->str), toktok));
-    it = it->next;
+      token_add_back(&(data->token), token_create(it->str, toktok));
+      it = it->next;
     }
   }
   return (TRUE);
