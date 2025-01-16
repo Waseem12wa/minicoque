@@ -32,6 +32,7 @@ bool token_setup(t_data *data)
 {
   t_list *it;
   int toktok;
+  char *str_to_use;
 
   it = data->cmd;
   if (!data->cmd)
@@ -42,13 +43,14 @@ bool token_setup(t_data *data)
     toktok = choose_token(it, last_token(data->token));
     if (toktok == HEREDOC || toktok == APPEND)
     {
-      char *joined = ft_strjoin(it->str, it->next->str);
-      token_add_back(&(data->token), token_create(joined, toktok));
+      str_to_use = ft_strjoin(it->str, it->next->str);
+      token_add_back(&(data->token), token_create(str_to_use, toktok));
       it = it->next->next;
     }
     else
     {
-      token_add_back(&(data->token), token_create(it->str, toktok));
+      str_to_use = ft_strdup(it->str);
+      token_add_back(&(data->token), token_create(str_to_use, toktok));
       it = it->next;
     }
   }

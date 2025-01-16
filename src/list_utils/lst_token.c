@@ -80,14 +80,12 @@ void	token_clear(t_token **lst, void (*del)(void *))
 {
   t_token	*it;
 
-  it = *lst;
   if (!del || !lst || !*lst)
     return ;
   while (*lst)
   {
     it = (*lst)->next;
-    if (it)
-      deltok(*lst, del);
+    deltok(*lst, del);
     *lst = it;
   }
   *lst = NULL;
