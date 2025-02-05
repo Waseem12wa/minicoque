@@ -9,6 +9,7 @@ SRCS =	src/main.c \
 				src/list_utils/utils2.c \
 				src/list_utils/split_quote.c \
 				src/list_utils/split_sep.c \
+				src/list_utils/split_sep2.c \
 				src/built-in/echo.c \
 				src/utils/prompt.c \
 				src/built-in/cd.c \
@@ -22,7 +23,10 @@ SRCS =	src/main.c \
 				src/utils/exec.c \
 				src/utils/clear.c \
 				src/list_utils/utils3.c \
-				src/utils/operator.c
+				src/list_utils/utils4.c \
+				src/utils/operator.c \
+				src/list_utils/gnl.c
+				
 OBJS = $(SRCS:.c=.o)
 NAME = minishell
 
